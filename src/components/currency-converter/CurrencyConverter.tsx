@@ -18,19 +18,19 @@ const CurrencyConverter = () => {
   } = useCurrencyConverter();
 
   useEffect(() => {
-    setinputGetValue(handleConvert(inputChangeValue));
+    setinputGetValue(handleConvert(inputChangeValue, false));
   }, [toCurrency, fromCurrency]);
 
   const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = String(event.target.value);
     setInputChangeValue(newValue);
-    setinputGetValue(handleConvert(newValue));
+    setinputGetValue(handleConvert(newValue, false));
   };
 
   const handleGetInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = String(event.target.value);
     setinputGetValue(newValue);
-    setInputChangeValue(handleConvert(newValue));
+    setInputChangeValue(handleConvert(newValue, true));
   };
 
   const handleSwap = () => {
@@ -39,9 +39,9 @@ const CurrencyConverter = () => {
     setToCurrency(temp);
   };
 
-  const handleConvert = (amount: string): string => {
-    const fromRate = exchangeRates[fromCurrency];
-    const toRate = exchangeRates[toCurrency];
+  const handleConvert = (amount: string, isInvert: boolean): string => {
+    const fromRate = isInvert ? exchangeRates[toCurrency] : exchangeRates[fromCurrency];
+    const toRate = isInvert ? exchangeRates[fromCurrency] : exchangeRates[toCurrency];
 
     const result = String(
       (
